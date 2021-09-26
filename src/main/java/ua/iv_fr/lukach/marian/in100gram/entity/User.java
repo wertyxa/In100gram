@@ -32,7 +32,7 @@ public class User implements UserDetails {
 
     @ElementCollection(targetClass = ERole.class)
     @CollectionTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id") )
+            joinColumns = @JoinColumn(name = "user_id"))
     private Set<ERole> role = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL,
@@ -48,7 +48,8 @@ public class User implements UserDetails {
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
-    public User(){}
+    public User() {
+    }
 
     public User(Long id, String username, String password, String email, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
