@@ -1,5 +1,6 @@
 package ua.iv_fr.lukach.marian.in100gram.security;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
 
         try {
-        String jwt = getJWTFromRequest(httpServletRequest);
+        String jwt = ""+getJWTFromRequest(httpServletRequest);
         if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
             Long id = jwtTokenProvider.getUserIDByToken(jwt);
             User userDetails = customUserDetailsService.loadUserById(id);
@@ -45,6 +46,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }catch (Exception e){
+            e.printStackTrace();
             LOG.error("Could Not set Authentication");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
